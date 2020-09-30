@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+</head>
+
+<body>
+    <table>
+        <tr>
+            <td><button id="0" onclick="clicker('0')"></button></td>
+            <td><button id="1" onclick="clicker('1')"></button></td>
+            <td><button id="2" onclick="clicker('2')"></button></td>
+        </tr>
+        <tr>
+            <td><button id="3" onclick="clicker('3')"></button></td>
+            <td><button id="4" onclick="clicker('4')"></button></td>
+            <td><button id="5" onclick="clicker('5')"></button></td>
+        </tr>
+        <tr>
+            <td><button id="6" onclick="clicker('6')"></button></td>
+            <td><button id="7" onclick="clicker('7')"></button></td>
+            <td><button id="8" onclick="clicker('8')"></button></td>
+        </tr>
+    </table>
+
+    <script>
+        let model = [];
+        function main() {
+            for (let i = 0; i < 9; i++) {
+                model[i] = "BLANK";
+                document.getElementById("" + i).innerHTML = "BLANK";
+            }
+        }
+
+        function clicker(index) {
+            let turn = getTurn();
+            if(turn != "BOARD FULL"){
+                if(model[index] == "BLANK"){
+                    model[index] = turn;
+                    document.getElementById("" + index).innerHTML = turn;
+                }
+            }
+        }
+
+        function getTurn() {
+            let countX = 0;
+            let countO = 0;
+
+            for (let i = 0; i < 9; i++) {
+                if (model[i] == "X")
+                    countX++;
+                if (model[i] == "O")
+                    countO++;
+            }
+
+            if (countX + countO == 9)
+                return "BOARD FULL";
+            else if (countX == countO)
+                return "X";
+            else return "O";
+        }
+
+        main();
+    </script>
+
+</body>
+
+</html>
