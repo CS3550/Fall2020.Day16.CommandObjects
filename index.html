@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    
+</head>
+<body>
+    <button onclick="doIncrement()">Increment</button>
+    <button onclick="doDecrement()">Decrement</button>
+    <button onclick="undo()">Undo</button>
+    <button onclick="redo()">Redo</button>
+    <script>
+        class Model{
+            constructor(){
+                this.value = 0;
+            }
+            increment(){
+                this.value++;
+                console.log(this.value);
+            }
+            decrement(){
+                this.value--;
+                console.log(this.value);
+            }
+        }
+
+        let model = new Model();
+
+        let undoStack = [];
+        let redoStack = [];
+
+        class IncrementCommand{
+            constructor(model){
+                this.model = model;
+            }
+            do(){
+                this.model.increment();
+            }
+            undo(){
+                this.model.decrement()
+            }
+        }
+
+        class DecrementCommand{
+            constructor(model){
+                this.model = model;
+            }
+            do(){
+                this.model.decrement();
+            }
+            undo(){
+                this.model.increment();
+            }
+        }
+
+        function doIncrement(){
+            let incrementCommand = new IncrementCommand(model);
+            incrementCommand.do();
+            undoStack.push(incrementCommand);
+            redoStack = [];
+        }
+
+        function doDecrement(){
+            let decrementCommand = new DecrementCommand(model);
+            decrementCommand.do();
+            undoStack.push(decrementCommand);
+            redoStack = [];
+        }
+
+        function undo(){
+            if(undoStack.length == 0) return;
+            let command = undoStack.splice(undoStack.length-1, 1)[0];
+            command.undo();
+            redoStack.push(command);
+        }
+
+        function redo(){
+            if(redoStack.length == 0) return;
+            let command = redoStack.splice(redoStack.length-1, 1)[0];
+            command.do();
+            undoStack.push(command);
+        }
+
+    
+    </script>
+    
+</body>
+</html>
